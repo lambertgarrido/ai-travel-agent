@@ -22,4 +22,5 @@ app.add_middleware(
 
 @app.post("/chat")
 def chat(query: Query):
-    return {"response": f"You said: {query.message}"}
+    response = run_agent(query.message, query.user_id)
+    return {"response": response}
