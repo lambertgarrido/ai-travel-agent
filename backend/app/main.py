@@ -1,5 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+class Query(BaseModel):
+    message: str
+    user_id: str = "default"
 
 app = FastAPI()
 
@@ -14,3 +19,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.post("/chat")
+def chat(query: Query):
+    return {"response": f"You said: {query.message}"}
