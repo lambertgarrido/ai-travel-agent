@@ -23,5 +23,10 @@ def root():
 
 @app.post("/chat")
 def chat(query: Query):
-    response = run_agent(query.message, query.user_id)
-    return {"response": response}
+    try:
+        response = run_agent(query.message, query.user_id)
+        return {"response": response}
+    except Exception as e:
+        return {
+            "response": "Sorry, the AI service is currently unavailable. Please try again later."
+        }
