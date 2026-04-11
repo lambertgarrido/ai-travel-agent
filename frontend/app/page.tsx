@@ -3,7 +3,12 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [response, setResponse] = useState("");
+
+  type ApiResponse =
+  | { type: "places"; data: any[] }
+  | { type: "text"; data: string };
+
+  const [response, setResponse] = useState<ApiResponse | null>(null);
   const [message, setMessage] = useState("");
 
   const sendMessage = async () => {
@@ -25,16 +30,20 @@ export default function Home() {
     setResponse(data.response);
   };
 
+  if (!response) return null;
+
   if (response.type === "places") {
     return (
       <div>
-        {response.data.map((p, i) => (
-          <div key={i}>
-          📍 {p.name}
-        </div>
-      ))}
+        {response.data.map((p: any, i: number) => (
+          <div key={i}>📍 {p.name}</div>
+        ))}
       </div>
     );
+  }
+
+  if (response.type === "text") {
+    return <div>{response.data}</div>;
   }
 
   return (
