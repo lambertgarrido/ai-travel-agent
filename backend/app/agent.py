@@ -11,7 +11,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def run_agent(message: str, user_id: str):
 
-    if "flight" in message.lower():
+    if "flight" in message.lower() or "flights" in message.lower():
         info = extract_flight_info(message)
 
         origin = info.get("origin")
