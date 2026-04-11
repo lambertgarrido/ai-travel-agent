@@ -1,9 +1,25 @@
 from openai import OpenAI
+from app.places import get_places
 import os
+import json
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def run_agent(message: str, user_id: str):
+
+    if "things to do" in message.lower():
+        city = extract_city(message)
+
+        if not city:
+            return {"type": "text", "data": "Please specify a city."}
+
+        places = get_places(city)
+
+        return {
+            "type": "places",
+            "data": places
+        }
+
     system_prompt = """
     You are an AI travel agent.
     Help users plan trips with:
@@ -23,3 +39,19 @@ def run_agent(message: str, user_id: str):
     )
 
     return response.choices[0].message.content
+
+def extract_city(message: str):
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "Extract the city name from the user's message. Return JSON: {\"city\": \"...\"}"
+            },
+            {"role": "user", "content": message}
+        ],
+        response_format={"type": "json_object"}
+    )
+
+    data = json.loads(response.choices[0].message.content)
+    return data.get("city")

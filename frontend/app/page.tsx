@@ -25,6 +25,18 @@ export default function Home() {
     setResponse(data.response);
   };
 
+  if (response.type === "places") {
+    return (
+      <div>
+        {response.data.map((p, i) => (
+          <div key={i}>
+          📍 {p.name}
+        </div>
+      ))}
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: 20 }}>
       <h1>AI Travel Agent</h1>
