@@ -6,6 +6,7 @@ export default function Home() {
 
   type ApiResponse =
   | { type: "places"; data: any[] }
+  | { type: "flights"; data: any[] }
   | { type: "text"; data: string };
 
   const [response, setResponse] = useState<ApiResponse | null>(null);
@@ -31,6 +32,20 @@ export default function Home() {
   };
 
   if (!response) return null;
+
+  if (response.type === "flights") {
+    return (
+      <div>
+        {response.data.map((f: any, i: number) => (
+          <div key={i}>
+            ✈️ {f.from} → {f.to} <br />
+            💰 {f.price} <br />
+            ⏱ {f.duration} mins
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (response.type === "places") {
     return (
