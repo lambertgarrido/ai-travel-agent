@@ -38,7 +38,10 @@ def run_agent(message: str, user_id: str):
         temperature=0.7,
     )
 
-    return response.choices[0].message.content
+    return {
+        "type": "text",
+        "data": response.choices[0].message.content
+    }   
 
 def extract_city(message: str):
     response = client.chat.completions.create(
