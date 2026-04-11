@@ -3,12 +3,32 @@ import os
 
 API_KEY = os.getenv("RAPIDAPI_KEY")
 
+CITY_TO_IATA = {
+    "new york": "JFK",
+    "paris": "CDG",
+    "london": "LHR",
+    "tokyo": "HND",
+    "rome": "FCO",
+    "atlanta": "ATL"
+}
+
+def get_iata(city):
+    if not city:
+        return None
+    return CITY_TO_IATA.get(city.lower())
+
 def search_flights(origin, destination, date):
     url = "https://skyscanner44.p.rapidapi.com/search"
 
+    origin_code = get_iata(origin)
+    destination_code = get_iata(destination)
+
+    if not origin_code or not destination_code:
+        return []
+
     querystring = {
-        "origin": origin,
-        "destination": destination,
+        "origin": origin_code,
+        "destination": destination_code,
         "departureDate": date,
         "adults": "1",
         "currency": "USD"
