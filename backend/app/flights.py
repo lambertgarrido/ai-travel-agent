@@ -42,6 +42,7 @@ def search_flights(origin, destination, date):
     response = requests.get(url, headers=headers, params=querystring)
 
     data = response.json()
+    print("RAW SKYSCANNER RESPONSE:", data)
 
     # Extract simplified results
     results = []
