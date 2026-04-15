@@ -18,7 +18,7 @@ def get_iata(city):
     return CITY_TO_IATA.get(city.lower())
 
 def search_flights(origin, destination, date):
-    url = "https://skyscanner44.p.rapidapi.com/search"
+    url = "https://skyscanner-flights-travel-api.p.rapidapi.com/flights/searchFlights"
 
     origin_code = get_iata(origin)
     destination_code = get_iata(destination)
@@ -39,7 +39,26 @@ def search_flights(origin, destination, date):
         "X-RapidAPI-Host": "skyscanner44.p.rapidapi.com"
     }
 
-    response = requests.get(url, headers=headers, params=querystring)
+    params = {
+        "countryCode": "US",
+        "market": "US",
+        "currency": "USD",
+        "adults": "1",
+        "childrens": "0",
+        "infants": "0",
+        "cabinClass": "economy",
+
+        # ✅ Example: London → New York
+        "originSkyId": "LOND",
+        "destinationSkyId": "NYCA",
+        "originEntityId": "27544008",
+        "destinationEntityId": "27537542",
+
+        "date": "2026-08-01",
+        "returnDate": "2026-08-15"
+    }
+
+    response = requests.get(url, headers=headers, params=params)
 
     data = response.json()
     print("RAW SKYSCANNER RESPONSE:", data)
