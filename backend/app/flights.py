@@ -36,7 +36,7 @@ def search_flights(origin, destination, date):
 
     headers = {
         "X-RapidAPI-Key": API_KEY,
-        "X-RapidAPI-Host": "skyscanner44.p.rapidapi.com"
+        "X-RapidAPI-Host": "skyscanner-flights-travel-api.p.rapidapi.com"
     }
 
     params = {
