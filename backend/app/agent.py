@@ -18,11 +18,11 @@ def run_agent(message: str, user_id: str):
         destination = info.get("destination")
         date = info.get("date")
 
-        if not origin or not destination:
-            return {
-                "type": "text",
-                "data": "Please specify origin and destination."
-            }
+        #if not origin or not destination:
+        #    return {
+        #        "type": "text",
+        #        "data": "Please specify origin and destination."
+        #    }
 
         flights = search_flights(origin, destination, date)
 
