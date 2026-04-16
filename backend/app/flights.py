@@ -20,19 +20,19 @@ def get_iata(city):
 def search_flights(origin, destination, date):
     url = "https://skyscanner-flights-travel-api.p.rapidapi.com/flights/searchFlights"
 
-    origin_code = get_iata(origin)
-    destination_code = get_iata(destination)
+    #origin_code = get_iata(origin)
+    #destination_code = get_iata(destination)
 
-    if not origin_code or not destination_code:
-        return []
+    #if not origin_code or not destination_code:
+    #    return []
 
-    querystring = {
-        "origin": origin_code,
-        "destination": destination_code,
-        "departureDate": date,
-        "adults": "1",
-        "currency": "USD"
-    }
+    #querystring = {
+    #    "origin": origin_code,
+    #    "destination": destination_code,
+    #    "departureDate": date,
+    #    "adults": "1",
+    #    "currency": "USD"
+    #}
 
     headers = {
         "X-RapidAPI-Key": API_KEY,

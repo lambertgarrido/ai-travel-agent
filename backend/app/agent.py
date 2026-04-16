@@ -12,11 +12,11 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def run_agent(message: str, user_id: str):
 
     if "flight" in message.lower() or "flights" in message.lower():
-        info = extract_flight_info(message)
+        #info = extract_flight_info(message)
 
-        origin = info.get("origin")
-        destination = info.get("destination")
-        date = info.get("date")
+        #origin = info.get("origin")
+        #destination = info.get("destination")
+        #date = info.get("date")
 
         #if not origin or not destination:
         #    return {
@@ -24,7 +24,8 @@ def run_agent(message: str, user_id: str):
         #        "data": "Please specify origin and destination."
         #    }
 
-        flights = search_flights(origin, destination, date)
+        #flights = search_flights(origin, destination, date)
+        flights = search_flights("dummy", "dummmy", "dummy")
 
         return {
             "type": "flights",
