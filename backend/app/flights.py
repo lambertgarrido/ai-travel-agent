@@ -64,14 +64,36 @@ def search_flights(origin, destination, date):
     print("RAW SKYSCANNER RESPONSE:", data)
 
     # Extract simplified results
+    #results = []
+    #for flight in data.get("itineraries", [])[:3]:
+    #    leg = flight["legs"][0]
+    #    results.append({
+    #        "from": leg["origin"]["displayCode"],
+    #        "to": leg["destination"]["displayCode"],
+    #        "price": flight.get("price", {}).get("formatted", ""),
+    #        "duration": leg.get("durationInMinutes", "")
+    #    })
+
+    return parse_flights(data)
+
+def parse_flights(data):
     results = []
-    for flight in data.get("itineraries", [])[:3]:
-        leg = flight["legs"][0]
-        results.append({
-            "from": leg["origin"]["displayCode"],
-            "to": leg["destination"]["displayCode"],
-            "price": flight.get("price", {}).get("formatted", ""),
-            "duration": leg.get("durationInMinutes", "")
-        })
+
+    for item in data.get("itineraries", []):
+        try:
+            first_leg = item["legs"][0]
+
+            results.append({
+                "price": item["price"]["amount"],
+                "currency": item["price"]["currency"],
+                "from": first_leg["origin"],
+                "to": first_leg["destination"],
+                "departure": first_leg["departure"],
+                "arrival": first_leg["arrival"],
+                "airline": first_leg["carriers"][0]["name"] if first_leg.get("carriers") else None,
+                "bookingUrl": item.get("bookingUrl")
+            })
+        except Exception as e:
+            print("PARSE ERROR:", e)
 
     return results
