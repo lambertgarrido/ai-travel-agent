@@ -31,40 +31,11 @@ export default function Home() {
     setResponse(data.response);
   };
 
-  if (!response) return null;
-
-  if (response.type === "flights") {
-    return (
-      <div>
-        {response.data.map((f: any, i: number) => (
-          <div key={i}>
-            ✈️ {f.from} → {f.to} <br />
-            💰 {f.price} <br />
-            ⏱ {f.duration} mins
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (response.type === "places") {
-    return (
-      <div>
-        {response.data.map((p: any, i: number) => (
-          <div key={i}>📍 {p.name}</div>
-        ))}
-      </div>
-    );
-  }
-
-  if (response.type === "text") {
-    return <div>{response.data}</div>;
-  }
-
   return (
     <div style={{ padding: 20 }}>
       <h1>AI Travel Agent</h1>
 
+      {/* INPUT ALWAYS VISIBLE */}
       <input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -73,7 +44,35 @@ export default function Home() {
 
       <button onClick={sendMessage}>Send</button>
 
-      <pre>{response}</pre>
+      <hr />
+
+      {/* RESPONSE AREA */}
+      {!response && <p>Ask something to start...</p>}
+
+      {response?.type === "flights" && (
+        <div>
+          {response.data.map((f: any, i: number) => (
+            <div key={i}>
+              ✈️ {f.from} → {f.to} <br />
+              💰 {f.price} <br />
+              ⏱ {f.duration} mins
+            </div>
+          ))}
+        </div>
+      )}
+
+      {response?.type === "places" && (
+        <div>
+          {response.data.map((p: any, i: number) => (
+            <div key={i}>📍 {p.name}</div>
+          ))}
+        </div>
+      )}
+
+      {response?.type === "text" && (
+        <div>{response.data}</div>
+      )}
+
     </div>
   );
 }
