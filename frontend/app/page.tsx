@@ -11,8 +11,14 @@ export default function Home() {
 
   const [response, setResponse] = useState<ApiResponse | null>(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
+  if (!message.trim()) return; // prevent empty messages
+
+  setLoading(true);
+
+  try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_BACKEND_URL + "/chat",
       {
@@ -21,7 +27,7 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: message,
+          message,
           user_id: "user123",
         }),
       }
@@ -29,7 +35,12 @@ export default function Home() {
 
     const data = await res.json();
     setResponse(data.response);
-  };
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div style={{ padding: 20 }}>
@@ -42,7 +53,11 @@ export default function Home() {
         placeholder="Plan my trip..."
       />
 
-      <button onClick={sendMessage}>Send</button>
+      <button onClick={sendMessage} disabled={loading}>
+        {loading ? "Thinking..." : "Send"}
+      </button>
+
+      {loading && <div className="spinner" />}
 
       <hr />
 
